@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Loader CodePlay</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #fff;
+      font-family: sans-serif;
+    }
+
+    #loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .logo-mask {
+      width: 180px;
+      height: auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logo-mask img {
+      width: 100%;
+      height: auto;
+      mask-image: linear-gradient(to top, black 0%, black 0%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to top, black 0%, black 0%, transparent 100%);
+      animation: reveal 2.5s ease-in-out forwards;
+    }
+
+    @keyframes reveal {
+      0% {
+        mask-image: linear-gradient(to top, black 0%, black 0%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to top, black 0%, black 0%, transparent 100%);
+      }
+      100% {
+        mask-image: linear-gradient(to top, black 100%, black 100%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to top, black 100%, black 100%, transparent 100%);
+      }
+    }
+
+    /* Ocultar loader al cargar */
+    body.loaded #loader {
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.5s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Loader -->
+  <div id="loader">
+    <div class="logo-mask">
+      <img src="imglogo-codeplay.jpg" alt="Logo CodePlay">
+    </div>
+  </div>
+
+  <!-- Contenido -->
+  <div id="contenido">
+    <h1>Bienvenido a CodePlay</h1>
+    <p>Contenido cargado.</p>
+  </div>
+
+  <script>
+    // Quita el loader cuando la página termina de cargar
+    window.addEventListener("load", function () {
+      document.body.classList.add("loaded");
+    });
+  </script>
+</body>
+</html>
