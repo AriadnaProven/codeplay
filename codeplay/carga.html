@@ -1,84 +1,82 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Loader CodePlay</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Animación Logo PNG</title>
   <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background: #fff;
-      font-family: sans-serif;
-    }
-
-    #loader {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: #ffffff;
+    body {
+      background: white;
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 9999;
-    }
-
-    .logo-mask {
-      width: 180px;
-      height: auto;
-      position: relative;
+      height: 100vh;
+      margin: 0;
       overflow: hidden;
+      position: relative;
     }
 
-    .logo-mask img {
+    .container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+    }
+
+    img.logo-png {
       width: 100%;
-      height: auto;
-      mask-image: linear-gradient(to top, black 0%, black 0%, transparent 100%);
-      -webkit-mask-image: linear-gradient(to top, black 0%, black 0%, transparent 100%);
-      animation: reveal 2.5s ease-in-out forwards;
+      height: 100%;
+      object-fit: contain;
+      clip-path: inset(0 100% 0 0); /* oculto por la derecha */
+      animation: reveal 5s forwards;
     }
 
     @keyframes reveal {
-      0% {
-        mask-image: linear-gradient(to top, black 0%, black 0%, transparent 100%);
-        -webkit-mask-image: linear-gradient(to top, black 0%, black 0%, transparent 100%);
-      }
-      100% {
-        mask-image: linear-gradient(to top, black 100%, black 100%, transparent 100%);
-        -webkit-mask-image: linear-gradient(to top, black 100%, black 100%, transparent 100%);
+      to {
+        clip-path: inset(0 0 0 0); /* se revela completamente */
       }
     }
 
-    /* Ocultar loader al cargar */
-    body.loaded #loader {
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.5s ease;
+    .circle-mask {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100px;
+      height: 100px;
+      background: black;
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      pointer-events: none;
+      transition: transform 2s ease;
+      z-index: 10;
+    }
+
+    .circle-mask.closing {
+      transform: translate(-50%, -50%) scale(10); /* crece y cubre todo */
     }
   </style>
 </head>
 <body>
 
-  <!-- Loader -->
-  <div id="loader">
-    <div class="logo-mask">
-      <img src="imglogo-codeplay.jpg" alt="Logo CodePlay">
-    </div>
-  </div>
-
-  <!-- Contenido -->
-  <div id="contenido">
-    <h1>Bienvenido a CodePlay</h1>
-    <p>Contenido cargado.</p>
+  <div class="container">
+    <img src="imglogo-codeplay.jpg" alt="Logo CodePlay" class="logo-png" id="logo" />
+    <div class="circle-mask" id="circle"></div>
   </div>
 
   <script>
-    // Quita el loader cuando la página termina de cargar
-    window.addEventListener("load", function () {
-      document.body.classList.add("loaded");
+    const circleMask = document.getElementById('circle');
+    const logo = document.getElementById('logo');
+
+    // Espera a que termine la animación "reveal" (5s)
+    logo.addEventListener('animationend', () => {
+      setTimeout(() => {
+        circleMask.classList.add('closing');
+        // Espera 2s para que termine la animación del cierre, y luego redirige
+        setTimeout(() => {
+          window.location.href = 'index.html'; // url destino
+        }, 2000);
+      }, 1000); // ⏱️ Espera 1 segundo después de revelarse
     });
   </script>
+
 </body>
 </html>
